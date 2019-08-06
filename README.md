@@ -1,18 +1,18 @@
 # HEADLESS CHROME HEADLESS
 
-Is docker image to get html content of url for server side rendering using puppeteer, a chrome headless java script wrapper. the purpose of this project is originally to support [durian](https://https://github.com/mailtarget/durian) library.
+puppeteer as an independent nodejs app. forked from [mailtarget](https://github.com/mailtarget/headless-chrome-api)
 
 ### Usage
 
     docker run -p 3000:3000 mailtarget/headless-chrome-api
 
+### example create pdf
 
-    POST http://localhost:3000/content
+    POST http://localhost:3000/pdf
 
     {
-        "url": "https://blog.mailtarget.co/5-langkah-membuat-event-dengan-mailtarget/",
-        "js": true // default false
+        "html": "<h1>my awesome dpf</h1>",
+        "paperSize": "A5" // default A4
     }
 
-It will response Json html content of the url provided
-
+It will response the pdf file generated from html
