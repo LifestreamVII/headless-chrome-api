@@ -1,4 +1,3 @@
 #!/bin/bash
 
-docker build --no-cache -t mailtarget/headless-chrome-api .
-
+docker build --no-cache -t wkwksama/headless-chrome-api .

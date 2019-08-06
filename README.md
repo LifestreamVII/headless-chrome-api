@@ -4,7 +4,7 @@ puppeteer as an independent nodejs app. forked from [mailtarget](https://github.
 
 ### Usage
 
-    docker run -p 3000:3000 mailtarget/headless-chrome-api
+    docker run -p 3000:3000 wkwksama/headless-chrome-api
 
 ### example create pdf
 
