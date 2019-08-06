@@ -1,24 +1,27 @@
 const express = require('express')
 const app = express()
-const port = 3000
+const bodyParser = require('body-parser');
 const puppeteer = require('puppeteer')
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 let browser
 
-(async () => { 
+(async () => {
     browser = await puppeteer.launch({
-        headless: true, 
+        headless: true,
         slowMo: 250,
         args: ['--no-sandbox', '--disable-setuid-sandbox']
-    }); 
+    });
 })();
 
 app.use(express.json());
 
 app.get('/', (req, res) => {
     res.send('headless chrome api is ready to serve')
-}) 
-    
+})
+
 app.post('/content', async (req, res) => {
     const url = req.body.url
     const js = req.body.js
@@ -33,14 +36,34 @@ app.post('/content', async (req, res) => {
     } catch (error) {
         console.error(error)
         res.status(500).send(error)
-    }  
+    }
+})
+
+app.post('/pdf', async (req, res) => {
+    const {html, paperSize} = req.body
+    try {
+        const page = await browser.newPage();
+        await page.setContent(html);
+        const result = await page.pdf({
+            format: paperSize || 'A4',
+            printBackground: true,
+        });
+        res.contentType('application/pdf');
+        res.send(result);
+        page.close()
+    } catch (error) {
+        res.status(500).send({
+            error: true,
+            msg: error.message,
+        })
+    }
 })
 
 async function ssr(url, js = false) {
     const page = await browser.newPage();
     if (js) {
         await page.goto(url, {waitUntil: 'networkidle0'});
-    } else { 
+    } else {
         await page.goto(url);
     }
     const html = await page.content(); // serialized HTML of page DOM.
@@ -48,6 +71,7 @@ async function ssr(url, js = false) {
     return html;
 }
 
+const port = 3000
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}!`)
 })
