@@ -1,3 +1,3 @@
 #!/bin/bash
 
-docker build --no-cache -t wkwksama/headless-chrome-api .
+docker build --no-cache -t lvii/headless-chrome-api .
