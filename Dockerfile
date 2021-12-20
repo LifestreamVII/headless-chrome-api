@@ -1,8 +1,5 @@
 FROM node:8-slim
-LABEL maintainer="Gasing Surawasi <mailpakgasing@gmail.com>"
-
-# See https://crbug.com/795759
-# RUN apt-get update && apt-get install -yq libx11-6 libx11-xcb1 libgconf-2-4 libxcomposite1
+LABEL maintainer="Partir <partir.com>"
 
 RUN apt-get update && apt-get install -y wget --no-install-recommends \
     && wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
@@ -19,7 +16,6 @@ ADD https://github.com/Yelp/dumb-init/releases/download/v1.2.0/dumb-init_1.2.0_a
 RUN chmod +x /usr/local/bin/dumb-init
 
 COPY . /app/
-#COPY local.conf /etc/fonts/local.conf
 WORKDIR app
 
 RUN yarn
